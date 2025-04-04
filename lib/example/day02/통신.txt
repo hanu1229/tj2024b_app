@@ -1,0 +1,48 @@
+[ JS ]
+    fetch 내장함수를 이용한 HTTP REST 자바(톰캣) 통신
+[ React ]
+    axios 함수를 이용한 HTTP REST 자바(톰캣) 통신
+[ Flutter ]
+    dio 함수를 이용한 HTTP REST 자바(톰캣) 통신
+    --> http VS dio( http + JSON타입변환)
+
+[ dio ]
+    01. 정의 : Flutter(Dart언어 : google이 만든 언어)에서 제공하는 HTTP 통신 라이브러리
+    02. 목적 : REST API요청과 응답을 받아 서버와 통신
+    03. 설치
+        03-1. https://pub.dev/packages/dio
+        03-2. 프로젝트 폴더내 'pubspec.yaml'
+                yaml 확장자 언어 주의할 점 : tab을 이용한 구분처리
+        03-3. 'dependencies: ' 내에 'dio: ^5.8.0+1' 작성
+    04. 사용법
+        04-1. import "pacakge:dio/dio.dart";
+        04-2. final dio = new Dio();
+        04-3. URL과 데이터
+                dio.post("URL", data : {key : value, key : value, ...});
+                dio.get("URL?key=$변수값&key=변수값");
+                dio.put("URL", data : {key : value, key : value, ...});
+                dio.delete("URL?key=$변수값&key=변수값");
+              동기화 예시
+                void 함수명() async {
+                    final id = 1;
+                    try {
+                        final response = await dio.get("http://localhost:8080/day03/task3/student?id=$id");
+                        print(response.data);
+                    } catch(e) {
+                        print(e);
+                    }
+                }
+              동기화 예시 - 함수를 부른 곳에서 동기화를 시키고 싶을 때
+              void main async {
+                await 함수명(); --> Future를 사용해야 await를 붙일 수 있음
+              }
+              Future<void> 함수명() async {
+                final id = 1;
+                try {
+                    final response = await dio.get("http://localhost:8080/day03/task3/student?id=$id");
+                    print(response.data);
+                } catch(e) {
+                    print(e);
+                }
+              }
+
