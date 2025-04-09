@@ -27,8 +27,23 @@ class 클래스명 extends StatelessWidget {
 }
 
 [ 대표 위젯 ]
-    01. MaterialApp     : 앱의 전체 위젯들의 틀을 정의하는 최상위 위젯
+    01. MaterialApp
+            - 전체 위젯을 감싼 뼈대 역할 위젯(최상위 위젯)
+            - 라우트 설정 | 초기화 경로 | 테마 설정 | 등등
+            - debugShowCheckedModeBanner : false
+                └── 개발 시 디버그 표시 끔
+            - initialRoute : "/"
+                └── 최초로 실행 시 열리는 경로
+            - routes : { "경로 정의" : (context) => 위젯명(), "경로 정의" : (context) => 위젯명(), ... }
+            - Navigator.pushNamed(context, "경로");
+                └── 이벤트로 특정 경로 호출
+            - Navigator.pop(context);
+                └── 이벤트로 이전 경로 호출
+
     02. Scaffold        : 기본적인 앱 레이아웃(헤더/푸터/본문 등등)을 제공하는 위젯
+            - 헤더 : appBar : AppBar()
+            - 본문 : body : 위젯명()
+            - 푸터 : bottomNavigationBar : 위젯명()
     03. AppBar          : 상단 메뉴 바
     04. Center          : 가로/세로 가운데 정렬
     05. Text            : 텍스트
