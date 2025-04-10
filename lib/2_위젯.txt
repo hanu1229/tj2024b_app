@@ -37,6 +37,14 @@ class 클래스명 extends StatelessWidget {
             - routes : { "경로 정의" : (context) => 위젯명(), "경로 정의" : (context) => 위젯명(), ... }
             - Navigator.pushNamed(context, "경로");
                 └── 이벤트로 특정 경로 호출
+            - Navigator.pushNamed(context, "경로", arguments : 인자);
+                ├── 이벤트로 특정 경로 호출 | 인자값 전달
+                └── 보낸 타입 변수명 = ModalRoute.of(context)!.settings.arguments as 보낸 타입;
+                                        └── ModalRoute : 라우터가 화면을 전환할 때 사용 하는 객체
+                                        └── ModalRoute.of(context) : 위젯 트리에서의 현재 위젯의 위치
+                                        └── ModalRoute.of(context)!.settings.arguments : 부모 위젯으로 부터 전달 받은 매개변수 반환
+            - Navigator.pushReplacementNamed(context, "/");
+                └── 이벤트로 특정 경로 호출 | 단, 뒤로가기 비활성화
             - Navigator.pop(context);
                 └── 이벤트로 이전 경로 호출
 

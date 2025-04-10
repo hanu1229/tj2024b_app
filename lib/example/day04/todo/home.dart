@@ -15,7 +15,8 @@ class _HomeState extends State<Home> {
   /** 서버에서 할 일 데이터 가져오기 */
   Future<void> todoFindAll() async {
     try {
-      final response = await dio.get("http://192.168.40.38:8080/day04/todos");
+      // final response = await dio.get("http://192.168.40.38:8080/day04/todos");
+      final response = await dio.get("https://wise-caprice-hanu1229-4a4e573f.koyeb.app/day04/todos");
       final data = response.data;
       print(data);
       setState(() {
@@ -35,7 +36,7 @@ class _HomeState extends State<Home> {
   /** 삭제 함수 */
   Future<void> todoDelete(int id) async {
     try {
-      final response = await dio.delete("http://192.168.40.38:8080/day04/todos?id=$id");
+      final response = await dio.delete("https://wise-caprice-hanu1229-4a4e573f.koyeb.app/day04/todos?id=$id");
       final data = response.data;
       if(data) {
         todoFindAll();
@@ -76,9 +77,27 @@ class _HomeState extends State<Home> {
                               Text("등록일 : ${todo["createAt"].split("T")[0]}"),
                             ],
                           ),
-                          trailing : IconButton(
-                              onPressed : () { todoDelete(todo["id"]); },
-                              icon : Icon(Icons.delete)
+                          trailing : Row(
+                            mainAxisSize : MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                  onPressed : () { Navigator.pushNamed(context, "/detail", arguments : todo["id"]); },
+                                  icon : Icon(Icons.info),
+                              ),
+                              IconButton(
+                                onPressed : () async {
+                                  final bool result = await Navigator.pushNamed(context, "/update", arguments : todo["id"]) as bool;
+                                  if(result) {
+                                    todoFindAll();
+                                  }
+                                },
+                                icon : Icon(Icons.edit),
+                              ),
+                              IconButton(
+                                  onPressed : () { todoDelete(todo["id"]); },
+                                  icon : Icon(Icons.delete),
+                              ),
+                            ],
                           ),
                         ),
                       ),

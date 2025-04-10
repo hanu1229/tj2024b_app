@@ -23,7 +23,8 @@ class _WriteState extends State<Write> {
   Future<void> todoSave(BuildContext context) async {
     try {
       final sendData = {"title" : titleController.text, "content" : contentController.text, "done" : "false"};
-      final response = await dio.post("http://192.168.40.38:8080/day04/todos", data : sendData);
+      // final response = await dio.post("http://192.168.40.38:8080/day04/todos", data : sendData);
+      final response = await dio.post("https://wise-caprice-hanu1229-4a4e573f.koyeb.app/day04/todos", data : sendData);
       final data = response.data;
       if(data != null) {
         // Navigator.pushNamed(context, "/");
