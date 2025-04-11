@@ -1,0 +1,1 @@
+const String serverPath = "http://localhost:8080/task05";
