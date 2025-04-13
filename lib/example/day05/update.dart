@@ -23,6 +23,7 @@ class _UpdateState extends State<Update> {
   dynamic bookInfo = {};
 
   bool colorCheck = true;
+  bool _obscure = true;
 
   /** 서버에서 상세정보 가져오기 */
   Future<void> bookFindById(int id) async {
@@ -130,12 +131,17 @@ class _UpdateState extends State<Update> {
               width : 300,
               child : TextField(
                 maxLength : 12,
+                obscureText : _obscure,
                 controller : passwordController,
                 decoration : InputDecoration(
                   labelText : colorCheck ? "비밀번호 확인" : "비밀번호 틀림",
                   enabledBorder : OutlineInputBorder(borderSide : BorderSide(color : colorCheck ? Colors.black : Colors.red, width : 1)),
                   border : OutlineInputBorder(borderSide : BorderSide(color : colorCheck ? Colors.black : Colors.red, width : 1)),
                   focusColor : colorCheck ? Colors.black : Colors.red,
+                  suffix : IconButton(
+                    onPressed : () { setState(() { _obscure = !_obscure; }); },
+                    icon : Icon(_obscure ? Icons.visibility_off : Icons.visibility),
+                  ),
                 ),
               ),
             ),
