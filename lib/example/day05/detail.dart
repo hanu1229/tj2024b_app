@@ -94,97 +94,101 @@ class _DetailState extends State<Detail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar : AppBar(title : Text("상세보기")),
-      body : Center(
-        child : Column(
-          mainAxisAlignment : MainAxisAlignment.start,
-          crossAxisAlignment : CrossAxisAlignment.end,
-          children : [
-            SizedBox(
-              width : 400,
-              child : Card(
-                elevation : 50,
-                child : Column(
-                  children : [
-                    SizedBox(height : 50),
-                    SizedBox(
-                      width : 300,
-                      child : TextField(
-                        controller : titleController,
-                        readOnly : true,
-                        decoration : InputDecoration(
-                          labelText : "제목",
-                          enabledBorder : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
-                          border : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
+      body : SingleChildScrollView(
+        child : Center(
+          child : Column(
+            mainAxisAlignment : MainAxisAlignment.start,
+            crossAxisAlignment : CrossAxisAlignment.end,
+            children : [
+              SizedBox(
+                width : 400,
+                child : Card(
+                  elevation : 50,
+                  child : Column(
+                    children : [
+                      SizedBox(height : 50),
+                      SizedBox(
+                        width : 300,
+                        child : TextField(
+                          controller : titleController,
+                          readOnly : true,
+                          decoration : InputDecoration(
+                            labelText : "제목",
+                            enabledBorder : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
+                            border : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height : 20),
-                    SizedBox(
-                      width : 300,
-                      child : TextField(
-                        controller : writerController,
-                        readOnly : true,
-                        decoration : InputDecoration(
-                          labelText : "저자",
-                          enabledBorder : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
-                          border : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
+                      SizedBox(height : 20),
+                      SizedBox(
+                        width : 300,
+                        child : TextField(
+                          controller : writerController,
+                          readOnly : true,
+                          decoration : InputDecoration(
+                            labelText : "저자",
+                            enabledBorder : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
+                            border : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height : 20),
-                    SizedBox(
-                      width : 300,
-                      child : TextField(
-                        maxLines : 5,
-                        controller : introController,
-                        readOnly : true,
-                        decoration : InputDecoration(
-                          labelText : "간단한 소개",
-                          enabledBorder : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
-                          border : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
+                      SizedBox(height : 20),
+                      SizedBox(
+                        width : 300,
+                        child : TextField(
+                          maxLines : 5,
+                          controller : introController,
+                          readOnly : true,
+                          decoration : InputDecoration(
+                            labelText : "간단한 소개",
+                            enabledBorder : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
+                            border : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height : 50),
-                  ],
+                      SizedBox(height : 50),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height : 30),
-            ElevatedButton(
-              onPressed : () {
-                Navigator.pushNamed(context, "/replyWrite", arguments : bookInfo["id"]);
-              },
-              child : Text("댓글 작성")
-            ),
-            SizedBox(height : 30),
-            SizedBox(
-              width : 400,
-              child : ListView(
-                shrinkWrap: true,
-                children : replyList.map((reply) {
-                  return Card(
-                    child : Padding(
-                      padding: EdgeInsets.all(15),
-                      child : Row(
-                        mainAxisAlignment : MainAxisAlignment.spaceBetween,
-                        mainAxisSize : MainAxisSize.min,
-                        children : [
-                          Text("${reply["comment"]}"),
-                          IconButton(
-                            onPressed : () {
-                              replyDelete(context, reply["id"]);
-                            },
-                            icon : Icon(Icons.delete)
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }).toList()
+              SizedBox(height : 30),
+              ElevatedButton(
+                  onPressed : () {
+                    Navigator.pushNamed(context, "/replyWrite", arguments : bookInfo["id"]);
+                  },
+                  child : Text("댓글 작성")
               ),
-            ),
-          ],
+              SizedBox(height : 30),
+              SizedBox(
+                width : 400,
+                height : (MediaQuery.of(context).size.height - AppBar().preferredSize.height) * 0.3,
+                child : ListView(
+                    shrinkWrap: true,
+                    scrollDirection : Axis.vertical,
+                    children : replyList.map((reply) {
+                      return Card(
+                        child : Padding(
+                          padding: EdgeInsets.all(15),
+                          child : Row(
+                            mainAxisAlignment : MainAxisAlignment.spaceBetween,
+                            mainAxisSize : MainAxisSize.min,
+                            children : [
+                              Text("${reply["comment"]}"),
+                              IconButton(
+                                  onPressed : () {
+                                    replyDelete(context, reply["id"]);
+                                  },
+                                  icon : Icon(Icons.delete)
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList()
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

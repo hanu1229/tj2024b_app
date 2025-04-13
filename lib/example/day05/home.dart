@@ -113,7 +113,10 @@ class _HomeState extends State<Home> {
     int count = 0;
 
     return Scaffold(
-      appBar : AppBar(title : Text("메인 페이지")),
+      appBar : AppBar(
+        automaticallyImplyLeading : false,
+        title : Text("메인 페이지"),
+      ),
       body : Center(
         child : ListView(
           children : bookList.map((book) {
