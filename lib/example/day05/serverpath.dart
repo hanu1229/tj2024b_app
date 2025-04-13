@@ -1,1 +1,1 @@
-const String serverPath = "http://localhost:8080/task05";
+const String serverPath = "https://wise-caprice-hanu1229-4a4e573f.koyeb.app/task05";
