@@ -15,6 +15,8 @@ class _ReplyWriteState extends State<ReplyWrite> {
 
   Dio dio = Dio();
 
+  bool _obscure = true;
+
   TextEditingController commentController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -77,11 +79,16 @@ class _ReplyWriteState extends State<ReplyWrite> {
               width : 300,
               child : TextField(
                 controller : passwordController,
+                obscureText : _obscure,
                 maxLength : 12,
                 decoration : InputDecoration(
                   labelText : "비밀번호",
                   enabledBorder : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
                   border : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1)),
+                  suffixIcon : IconButton(
+                    onPressed : () { setState(() { _obscure = !_obscure; }); },
+                    icon : Icon(_obscure ? Icons.visibility_off : Icons.visibility),
+                  ),
                 ),
               ),
             ),

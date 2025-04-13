@@ -2,6 +2,7 @@
 
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
+import "package:tj2024b_app/example/day05/deleteModal.dart";
 import "package:tj2024b_app/example/day05/serverpath.dart";
 
 class Detail extends StatefulWidget {
@@ -20,6 +21,7 @@ class _DetailState extends State<Detail> {
   TextEditingController introController = TextEditingController();
 
   dynamic bookInfo = {};
+  List<dynamic> replyList = [];
 
   /** 서버에서 상세정보 가져오기 */
   Future<void> bookFindById(int id) async {
@@ -40,12 +42,52 @@ class _DetailState extends State<Detail> {
     }
   }
 
+  /** 서버에서 댓글 가져오기 */
+  Future<void> replyById(int id) async {
+    try {
+      final response = await dio.get("$serverPath/reply?book_id=$id");
+      final data = response.data;
+      if(data != null) {
+        setState(() {
+          replyList = data;
+        });
+      }
+    } catch(e) {
+      print(e);
+    }
+  }
+
+  /** 댓글 삭제하기 */
+  Future<void> replyDelete(BuildContext context, int id) async {
+    final password = await showPasswordDialog(context);
+    if(password == null) { return; }
+    final sendData = {
+      "id" : id,
+      "password" : password,
+    };
+    try {
+      final response = await dio.delete("$serverPath/reply", data : sendData);
+      final data = response.data;
+      if(data) {
+        setState(() {
+          replyById(bookInfo["id"]);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("삭제 성공")));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("비밀번호가 틀렸습니다.")));
+      }
+    } catch(e) {
+      print(e);
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     int id = ModalRoute.of(context)!.settings.arguments as int;
     print("id = $id");
     bookFindById(id);
+    replyById(id);
   }
 
   @override
@@ -118,10 +160,30 @@ class _DetailState extends State<Detail> {
             SizedBox(height : 30),
             SizedBox(
               width : 400,
-              child : Card(
-                child : Text("테스트"),
+              child : ListView(
+                shrinkWrap: true,
+                children : replyList.map((reply) {
+                  return Card(
+                    child : Padding(
+                      padding: EdgeInsets.all(15),
+                      child : Row(
+                        mainAxisAlignment : MainAxisAlignment.spaceBetween,
+                        mainAxisSize : MainAxisSize.min,
+                        children : [
+                          Text("${reply["comment"]}"),
+                          IconButton(
+                            onPressed : () {
+                              replyDelete(context, reply["id"]);
+                            },
+                            icon : Icon(Icons.delete)
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList()
               ),
-            )
+            ),
           ],
         ),
       ),
