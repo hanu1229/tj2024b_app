@@ -2,6 +2,7 @@
 
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
+import "package:tj2024b_app/app/member/login.dart";
 
 class Signup extends StatefulWidget {
 
@@ -34,7 +35,7 @@ class _SignupState extends State<Signup> {
       "name" : nameController.text
     };
     try {
-      final response = await dio.post("http://localhost:8080/member", data : sendData);
+      final response = await dio.post("http://localhost:8080/member/signup", data : sendData);
       final data = response.data;
       if(data) {
         showDialog(
@@ -99,6 +100,7 @@ class _SignupState extends State<Signup> {
               TextField(
                 controller : passwordController,
                 obscureText: _obscure,
+                maxLength : 15,
                 decoration : InputDecoration(
                   labelText : "패스워드",
                   contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
@@ -116,6 +118,7 @@ class _SignupState extends State<Signup> {
               SizedBox(height : 20),
               TextField(
                 controller : nameController,
+                maxLength : 12,
                 decoration : InputDecoration(
                   labelText : "닉네임",
                   enabledBorder : OutlineInputBorder(borderSide : BorderSide(color : Colors.black, width : 1),),
@@ -130,7 +133,9 @@ class _SignupState extends State<Signup> {
               SizedBox(height : 20),
               Center(
                 child : TextButton(
-                  onPressed : () {},
+                  onPressed : () {
+                    Navigator.pushReplacementNamed(context, "/", arguments : "로그인 시도");
+                  },
                   child : Column(
                     children : [
                       Text("이미 가입한 사용자라면"),

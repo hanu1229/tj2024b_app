@@ -1,0 +1,23 @@
+[ SharedPreferences ]
+    01. 정의 : 앱을 종료했거나 다시 켜도 유지되는 데이터를 저장하기
+            * 앱은 개인 소정이므로 상태유지 하는 경우가 다수
+    02. 목적
+            - 로그인 유지, 앱설정, 간단한 캐시 들을 저장
+    03. 사용밥
+        03-1. 설치 | 의존성 추가
+            - shared_preferences: ^2.5.3
+            - 의존성 새로고침 : pub get
+
+        03-2. 전역객체 가져오기
+            - SharedPreferences 변수명(prefs) = await SharedPreferences.getInstance();
+
+        03-3. 값 저장하기
+            - await 변수명.set타입(key, value);
+                - setInt(), setDouble(), setBool(), setString(), setStringList()
+
+        03-4. 값 불러오기
+            - await 변수명.get타입(key);
+                - getInt(), getDouble(), getBool(), getString(), getStringList()
+
+        03-5. 값 삭제하기
+            - await 변수명.remove(key);
