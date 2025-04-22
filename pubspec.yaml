@@ -39,6 +39,8 @@ dependencies:
   dio: ^5.8.0+1
   # 비동기 전역변수 라이브러리 추가 
   shared_preferences: ^2.5.3
+  # toast 알림창
+  fluttertoast: ^8.2.12
 
 dev_dependencies:
   flutter_test:

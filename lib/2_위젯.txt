@@ -47,6 +47,8 @@ class 클래스명 extends StatelessWidget {
                 └── 이벤트로 특정 경로 호출 | 단, 뒤로가기 비활성화
             - Navigator.pop(context);
                 └── 이벤트로 이전 경로 호출
+            - Navigator.pushReplacement(context, MaterialPageRoute(builder : (context) => 위젯명());
+                └── 이벤트로 특정 경로 호출 | 단, 뒤로가기 비활성화
 
     02. Scaffold        : 기본적인 앱 레이아웃(헤더/푸터/본문 등등)을 제공하는 위젯
             - 헤더 : appBar : AppBar()

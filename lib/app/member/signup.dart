@@ -2,6 +2,7 @@
 
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
+import "package:fluttertoast/fluttertoast.dart";
 import "package:tj2024b_app/app/member/login.dart";
 
 class Signup extends StatefulWidget {
@@ -28,17 +29,45 @@ class _SignupState extends State<Signup> {
       <br/>
       서버에 값 전달
    */
-  Future<void> onSignup(BuildContext context) async {
+  Future<bool?> onSignup(BuildContext context) async {
+    dynamic result;
     final sendData = {
       "email" : emailController.text,
       "password" : passwordController.text,
       "name" : nameController.text
     };
+    // Rest API통신 간의 로딩 화면 표시 | showDialog() : 팝업 창을 띄우기 위한 위젯
+    showDialog(
+      context: context,
+      barrierDismissible : false,
+      builder: (BuildContext context) => 
+          Center(
+            child : CircularProgressIndicator(),
+          ),
+    );
     try {
       final response = await dio.post("http://localhost:8080/member/signup", data : sendData);
       final data = response.data;
+      Navigator.pop(context);
+      Fluttertoast.showToast(
+        // 출력할 내용
+        msg: "회원가입을 성공했습니다.",
+        // 메시지 유지시간
+        toastLength : Toast.LENGTH_LONG,
+        // 메시지 표시 위치 : 앱 적용
+        gravity : ToastGravity.BOTTOM,
+        // 자세한 유지시간
+        timeInSecForIosWeb : 3,
+        // 배경색
+        backgroundColor : Colors.black,
+        // 글자색
+        textColor : Colors.white,
+        // 글자크기
+        fontSize : 16,
+        webShowClose: true,
+      );
       if(data) {
-        showDialog(
+        result = await showDialog(
             context: context,
             barrierDismissible : false,
             builder: (BuildContext context) {
@@ -47,7 +76,13 @@ class _SignupState extends State<Signup> {
                 actions : [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, "/", arguments : "회원가입");
+                      Navigator.pop(context, true);
+                      //Navigator.pushReplacementNamed(context, "/", arguments : "회원가입");
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(builder : (context) => Login(),
+                      //   ),
+                      // );
                     },
                     child: Text("확인"),
                   ),
@@ -56,15 +91,17 @@ class _SignupState extends State<Signup> {
             }
         );
       } else {
-        showDialog(
+        result = await showDialog(
             context: context,
-            barrierDismissible : false,
+            barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                content : Text("회원가입 오류!", style : TextStyle(fontSize : 24)),
-                actions : [
+                content: Text("회원가입 오류!", style: TextStyle(fontSize: 24)),
+                actions: [
                   ElevatedButton(
-                    onPressed: () { Navigator.pop(context); },
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    },
                     child: Text("확인"),
                   ),
                 ],
@@ -76,6 +113,7 @@ class _SignupState extends State<Signup> {
       print(e);
     }
     print(sendData);
+    return result;
   }
 
   @override
@@ -127,14 +165,27 @@ class _SignupState extends State<Signup> {
               ),
               SizedBox(height : 20),
               ElevatedButton(
-                onPressed : () { onSignup(context); },
+                onPressed : () async {
+                  bool? result = await onSignup(context);
+                  if(result == true) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder : (context) => Login(),
+                      ),
+                    );
+                  }
+                },
                 child : Text("회원가입"),
               ),
               SizedBox(height : 20),
               Center(
                 child : TextButton(
                   onPressed : () {
-                    Navigator.pushReplacementNamed(context, "/", arguments : "로그인 시도");
+                    //Navigator.pushReplacementNamed(context, "/", arguments : "로그인 시도");
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder : (context) => Login()),
+                    );
                   },
                   child : Column(
                     children : [

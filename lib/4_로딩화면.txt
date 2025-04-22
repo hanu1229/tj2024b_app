@@ -1,0 +1,17 @@
+[ 로딩 화면 ]
+    01. Rest api(dio)간의 로딩 화면 구현
+        (1) 로딩 화면 표시
+    showDialog(
+        context : context,
+        barrierDismissible : false,
+        builder : (context) => 위젯명(),
+    );
+        (2) 로딩 화면 지우기
+        // 가장 앞(가장 최근에 열른)위젯 닫기
+        Navigator.pop(context);
+    barrierDismissible : 팝업창(로딩화면)의 바깥 부분 클릭 차단
+
+[ 알림 메시지 ] : 화면에 간단한 메시지 띄우기
+    01. 라이브러리 설치
+        01-1. pubspec.yaml의 dependencies에 fluttertoast: ^8.2.12 작성
+        01-2. [pub get] 후 다시 실행

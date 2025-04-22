@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tj2024b_app/app/layout/main_app.dart';
 
 class Info extends StatefulWidget {
 
@@ -87,7 +88,13 @@ class _InfoState extends State<Info> {
         );
         await prefs.remove("token");
         print("로그아웃");
-        Navigator.pushReplacementNamed(context, "/", arguments : "로그아웃");
+        // Navigator.pushReplacementNamed(context, "/", arguments : "로그아웃");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder : (context) => MainApp(),
+          ),
+        );
       } catch(e) {
         print(e);
       }
@@ -102,6 +109,17 @@ class _InfoState extends State<Info> {
 
   @override
   Widget build(BuildContext context) {
+    
+    // 만약에 로그인 상태가 확인되기 전에 대기 화면을 표현
+    if(_isLogin == null) {
+      return Scaffold(
+        body : Center(
+          // 로딩을 제공하는 위젯
+          child : CircularProgressIndicator(),
+        ),
+      );
+    }
+    
     return Scaffold(
       body : Container(
         margin : EdgeInsets.all(30),
