@@ -6,6 +6,7 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:tj2024b_app/app/member/info.dart";
 import "package:tj2024b_app/app/member/login.dart";
 import "package:tj2024b_app/app/member/signup.dart";
+import "package:tj2024b_app/app/product/product_list.dart";
 
 class MainApp extends StatefulWidget {
 
@@ -22,13 +23,13 @@ class _MainAppState extends State<MainApp> {
   // Widget : 여러 위젯들을 상속하는 상위 위젯(클래스)
   List<Widget> pages = [
     Text("홈페이지"),
-    Text("게시물1 페이지"),
+    ProductList(),
     Text("게시물2 페이지"),
     // Signup(),
     // Login(),
   ];
   // 페이지 상단 제목 리스트
-  List<String> pageTitle = ["홈", "게시물1", "게시물2", "회원가입", "로그인", "내정보"];
+  List<String> pageTitle = ["홈", "제품목록", "게시물2", "회원가입", "로그인", "내정보"];
   // 상태 변수 | 현재 클릭된 페이지를 확인하는 변수
   int selectedIndex = 0;
 
@@ -56,12 +57,12 @@ class _MainAppState extends State<MainApp> {
     }
     pages = [
       Text("홈페이지"),
-      Text("게시물1 페이지"),
+      ProductList(),
       Text("게시물2 페이지"),
       Signup(),
       _checkLogin ? Info() : Login()
     ];
-    pageTitle = ["홈", "게시물1", "게시물2", "회원가입", _checkLogin ? "내정보" : "로그인"];
+    pageTitle = ["홈", "제품목록", "게시물2", "회원가입", _checkLogin ? "내정보" : "로그인"];
 
   }
 
@@ -79,7 +80,7 @@ class _MainAppState extends State<MainApp> {
       }
       pages = [
         Text("홈페이지"),
-        Text("게시물1 페이지"),
+        ProductList(),
         Text("게시물2 페이지"),
         Signup(),
         _checkLogin ? Info() : Login()
@@ -120,7 +121,7 @@ class _MainAppState extends State<MainApp> {
         // 여러개의 버튼 위젯들
         items: [
           BottomNavigationBarItem(icon : Icon(Icons.home), label: "홈"),
-          BottomNavigationBarItem(icon : Icon(Icons.forum), label : "게시물1"),
+          BottomNavigationBarItem(icon : Icon(Icons.forum), label : "제품목록"),
           BottomNavigationBarItem(icon : Icon(Icons.forum), label : "게시물2"),
           BottomNavigationBarItem(icon : Icon(Icons.person_add_alt_1), label : "회원가입"),
           // BottomNavigationBarItem(icon : Icon(Icons.login), label : "로그인"),

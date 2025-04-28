@@ -1,4 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!-- 안드로이드 배포 시 https 권한 설정 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:label="tj2024b_app"
         android:name="${applicationName}"
@@ -43,7 +49,5 @@
         </intent>
     </queries>
 
-    <!-- 안드로이드 배포 시 https 권한 설정 -->
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
