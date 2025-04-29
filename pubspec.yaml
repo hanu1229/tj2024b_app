@@ -41,6 +41,8 @@ dependencies:
   shared_preferences: ^2.5.3
   # toast 알림창
   fluttertoast: ^8.2.12
+  # 이미지
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

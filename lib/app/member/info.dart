@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tj2024b_app/app/layout/main_app.dart';
+import 'package:tj2024b_app/app/server_url.dart';
 
 class Info extends StatefulWidget {
 
@@ -53,7 +54,7 @@ class _InfoState extends State<Info> {
         // dio.options.headers["Authorization"] = token;
         // 방법2 : dio.get(options : Options(headers : {"Authorization" : token}));
         final response = await dio.get(
-          "http://localhost:8080/member/info",
+          "$serverUrl/member/info",
           options : Options(
               headers : {"Authorization" : token}
           ),
@@ -81,7 +82,7 @@ class _InfoState extends State<Info> {
         final prefs = await SharedPreferences.getInstance();
         final token = prefs.getString("token");
         final response = await dio.get(
-          "http://localhost:8080/member/logout",
+          "$serverUrl/member/logout",
           options : Options(
             headers : {"Authorization" : token},
           ),

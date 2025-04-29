@@ -1,5 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tj2024b_app/app/layout/main_app.dart';
+import 'package:tj2024b_app/app/product/product_list.dart';
+import 'package:tj2024b_app/app/server_url.dart';
 
 class ProductView extends StatefulWidget {
 
@@ -16,9 +20,10 @@ class ProductView extends StatefulWidget {
 class _ProductViewState extends State<ProductView> {
 
   final dio = Dio();
-  final baseUrl = "http://192.168.40.38:8080";
+  final baseUrl = serverUrl;
 
   Map<String, dynamic> product = {};
+  bool isOwner = false;
 
   @override
   void initState() {
@@ -31,10 +36,42 @@ class _ProductViewState extends State<ProductView> {
     try {
       final response = await dio.get("$baseUrl/product/view?pno=${widget.pno}");
       if(response.data != null) {
+        final prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString("token");
+        if(token == null) { setState(() { isOwner = false; }); }
+        final response2 = await dio.get("$serverUrl/member/info", options : Options(headers : {"Authorization" : token}));
+        if(response2.data["email"] == response.data["email"]) {
+          setState(() { isOwner = true; });
+        }
         setState(() {
           product = response.data;
           print(product);
         });
+      }
+    } catch(e) {
+      print(e);
+    }
+  }
+
+  Future<void> deleteProduct(BuildContext context) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      if(token == null) { return; }
+      Options options = Options(headers : {"Authorization" : token});
+      final response = await dio.delete("$serverUrl/product/delete?pno=${widget.pno}", options : options);
+      if(response.statusCode == 200 && response.data == true) {
+        print("삭제 성공!");
+        setState(() {});
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => MainApp(),
+        //   ),
+        // );
+        Navigator.pop(context);
+      } else {
+        print("삭제 실패!");
       }
     } catch(e) {
       print(e);
@@ -103,6 +140,33 @@ class _ProductViewState extends State<ProductView> {
               SizedBox(height : 10),
               Text("${product["pcontent"]}"),
               SizedBox(height : 10),
+              Divider(),
+              SizedBox(height : 10),
+              isOwner ? Row(
+                mainAxisAlignment : MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton.icon(
+                    icon : Icon(Icons.edit, color : Colors.white),
+                    onPressed : () {
+
+                    },
+                    label : Text("수정하기", style : TextStyle(color : Colors.white,),),
+                    style : ElevatedButton.styleFrom(
+                      backgroundColor : Colors.blue,
+                    ),
+                  ),
+                  ElevatedButton.icon(
+                    icon : Icon(Icons.delete, color : Colors.white),
+                    onPressed : () {
+                      deleteProduct(context);
+                    },
+                    label : Text("삭제하기", style : TextStyle(color : Colors.white,),),
+                    style : ElevatedButton.styleFrom(
+                      backgroundColor : Colors.blue,
+                    ),
+                  ),
+                ],
+              ) : SizedBox.shrink(),
             ],
           ),
         ),

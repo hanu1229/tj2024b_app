@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tj2024b_app/app/product/product_view.dart';
+import 'package:tj2024b_app/app/server_url.dart';
 
 class ProductList extends StatefulWidget{
   @override
@@ -14,7 +15,7 @@ class _ProductListState extends State<ProductList>{
   int page = 1; // 현재 조회 중인 페이지 번호 갖는 상태변수 , 초기값 1
   List<dynamic> productList = []; // 자바서버로 부터 조회 한 제품(DTO) 목록 상태변수
   final dio = Dio(); // 자바서버 와 통신 객체
-  String baseUrl = "http://192.168.40.38:8080"; // 기본 자바서버의 URL 정의 // 환경에 따라 IP변경
+  String baseUrl = serverUrl; // 기본 자바서버의 URL 정의 // 환경에 따라 IP변경
   // * 현재 스크롤의 상태( 위치/크기 등) 를 감지하는 컨트롤러
   // * 무한스크롤( 스크롤이 거의 바닥에 위치했을때 새로운 자료 요청 해서 추가 한다. )
   // .position : 현재 스크롤의 위치 반환 , .position.pixels : 위치를 픽셀로 반환
@@ -28,10 +29,17 @@ class _ProductListState extends State<ProductList>{
     scrollController.addListener( onScroll ); // .addListener: 스크롤의 이벤트(함수) 리스너 추가
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    onProductAll(page);
+  }
+
   // 3. 자바서버에게 자료 요청 메소드
   void onProductAll( int currentPage ) async {
     try{
       final response = await dio.get( "$baseUrl/product/all?page=$currentPage"); // 현재페이지(page) 매개변수로 보낸다.
+      print(">> ${response.data["totalPages"]}");
       setState(() {
         page = currentPage; // 증가된 현재페이지를 상태변수에 반영
         if(page == 1) {

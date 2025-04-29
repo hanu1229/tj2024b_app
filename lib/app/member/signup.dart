@@ -4,6 +4,7 @@ import "package:dio/dio.dart";
 import "package:flutter/material.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:tj2024b_app/app/member/login.dart";
+import "package:tj2024b_app/app/server_url.dart";
 
 class Signup extends StatefulWidget {
 
@@ -46,7 +47,7 @@ class _SignupState extends State<Signup> {
           ),
     );
     try {
-      final response = await dio.post("http://localhost:8080/member/signup", data : sendData);
+      final response = await dio.post("$serverUrl/member/signup", data : sendData);
       final data = response.data;
       Navigator.pop(context);
       Fluttertoast.showToast(

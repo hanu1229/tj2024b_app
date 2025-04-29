@@ -3,6 +3,7 @@
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
+import "package:tj2024b_app/app/server_url.dart";
 
 class Login extends StatefulWidget {
 
@@ -28,7 +29,7 @@ class _LoginState extends State<Login> {
         "email" : emailController.text,
         "password" : passwordController.text
       };
-      final response = await dio.post("http://localhost:8080/member/login", data : sendData);
+      final response = await dio.post("$serverUrl/member/login", data : sendData);
       data = response.data;
       if(data == "로그인 실패") {
         print(data);
